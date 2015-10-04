@@ -1,0 +1,26 @@
+{
+  "name": "qui-selection",
+  "description": "Simple classes for working with selection. Provide able to select, deselect items and general functions to get more information about selection.",
+  "main": [
+    "dist/qui-selection.js"
+  ],
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "qui",
+    "selection"
+  ],
+  "authors": [
+    "Eugene Boyko <alighieri.onix@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "source/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/eugeneboyko/qui-selection.git"
+  },
+  "private": false
+}
