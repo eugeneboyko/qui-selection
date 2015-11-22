@@ -1,5 +1,5 @@
 function Selection(allItems, selectionLimit) {
-  this.setSelectionLimit(selectionLimit);
+  this.selectionLimit = selectionLimit;
   this.__selectedItems = [];
   this.__allItems = allItems || [];
 }
