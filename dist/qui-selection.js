@@ -1,91 +1,107 @@
 var Qui = Qui || {};
-(function (Qui) {
-    function DefaultSelectionPrototype() {
+(function(Qui) {
+  function Selection(allItems, selectionLimit) {
+    this.setSelectionLimit(selectionLimit);
+    this.__selectedItems = [];
+    this.__allItems = allItems || [];
+  }
 
+  Selection.prototype = {
+    select: function(item) {
+      if (this.__selectedItems.indexOf(item) !== -1)
+        return;
+      this.__selectedItems.push(item);
+      if (this.callback)
+        this.callback(item, true);
+    },
+    deselect: function(item) {
+      var index = this.__selectedItems.indexOf(item);
+      if (index === -1)
+        return;
+      this.__selectedItems.splice(index, 1);
+      if (this.callback)
+        this.callback(item, false);
+    },
+    isSelected: function(item) {
+      return this.__selectedItems.indexOf(item) !== -1;
+    },
+    toggle: function(item) {
+      if (this.__selectedItems.indexOf(item) === -1)
+        this.selectItem(item);
+      else
+        this.deselectItem(item);
+    },
+    selectItems: function(items) {
+      for (var i = 0; i < items.length; i++)
+        this.select(items);
+    },
+    deselectItems: function(items) {
+      for (var i = 0; i < items.length; i++)
+        this.deselect(items);
+    },
+    toggleItems: function(items) {
+      for (var i = 0; i < items.length; i++)
+        this.toggle(items);
+    },
+    isAllItemsSelected: function(items) {
+      for (var i = 0; i < items.length; i++)
+        if (!this.isSelected(items[i]))
+          return false;
+      return true;
+    },
+    isAnyItemSelected: function(items) {
+      for (var i = 0; i < items.length; i++)
+        if (this.isSelected(items[i]))
+          return true;
+      return false;
+    },
+    selectAll: function() {
+      this.__selectedItems = this.__allItems.splice();
+    },
+    deselectAll: function() {
+      this.__selectedItems = [];
+    },
+    toggleAll: function() {
+      if (!this.isAllSelected())
+        this.selectAll();
+      else
+        this.deselectAll();
+    },
+    isAllSelected: function() {
+      return this.__selectedItems.length === this.__allItems.length;
+    },
+    firstSelected: function() {
+      return this.__selectedItems[0];
     }
+  };
 
-    DefaultSelectionPrototype.prototype = {
-        select: function (item) {
-            if (this.__selected.indexOf(item) !== -1)
-                return;
-            this.__selected.push(item);
-            if (this.callback)
-                this.callback(item, true);
-        },
-        deselect: function (item) {
-            var index = this.__selected.indexOf(item);
-            if (index === -1)
-                return;
-            this.__selected.splice(index, 1);
-            if (this.callback)
-                this.callback(item, false);
-        },
-        isSelected: function (item) {
-            return this.__selected.indexOf(item) !== -1;
-        },
-        toggle: function (item) {
-            if (this.__selected.indexOf(item) === -1)
-                this.select(item);
-            else
-                this.deselect(item);
-        },
-        getSelected: function () {
-            return this.__selected;
-        },
-        getSelectedCopy: function () {
-            return this.__selected.slice();
-        },
-        getAll: function () {
-            return this.__all;
-        },
-        getAllCopy: function () {
-            return this.__all.slice();
-        },
-        firstSelected: function () {
-            return this.__selected[0];
-        },
-        selectAll: function (items) {
-            for (var i = 0; i < items.length; i++)
-                this.select(items[i]);
-        },
-        deselectAll: function (items) {
-            for (var i = 0; i < items.length; i++)
-                this.deselect(items[i]);
-        },
-        isAllSelected: function () {
-            return this.__all.length === this.__selected.length;
-        },
-        isAnySelected: function () {
-            return this.__selected.length !== 0;
-        }
-    };
-
-    function DefaultSelection(allItems, callback) {
-        this.__all = allItems;
-        this.__selected = [];
-        if (callback)
-            this.callback = callback;
+  Object.defineProperty(Selection.prototype, "selectedItems", {
+    get: function() {
+      return this.__selectedItems;
+    },
+    set: function(newSelectedItems) {
+      var itemsToDeselect = [];
+      for (var i = 0; i < this.__selectedItems.length; i++)
+        if (newSelectedItems.indexOf(this.__selectedItems[i]) === -1)
+          itemsToDeselect.push(this.__selectedItems[i]);
+      for (var i = 0; i < itemsToDeselect.length; i++)
+        this.deselect(itemsToDeselect[i]);
+      for (var i = 0; i < newValue.length; i++)
+        this.select(newValue[i]);
     }
+  });
 
-    DefaultSelection.prototype = new DefaultSelectionPrototype();
-
-    function DefaultSingleSelection(allItems, callback) {
-        this.__all = allItems;
-        this.__selected = [];
-        if (callback)
-            this.callback = callback;
+  Object.defineProperty(Selection.prototype, "allItems", {
+    get: function() {
+      return this.__allItems;
+    },
+    set: function(newAllItems) {
+      for (var i = 0; i < this.__selectedItems.length; i++)
+        if (newAllItems.indexOf(this.__selectedItems[i]) === -1)
+          this.deselect(this.__selectedItems[i]);
+      this.__allItems = newAllItems;
     }
+  });
 
-    DefaultSingleSelection.prototype = new DefaultSelectionPrototype();
-    DefaultSingleSelection.prototype.select = function (item) {
-        if (this.__selected.length !== 0)
-            this.deselect(this.__selected[0]);
-        this.__selected.push(item);
-        if (this.callback)
-            this.callback(item, true);
-    };
-
-    Qui.DefaultSelectionPrototype = DefaultSelectionPrototype;
-    Qui.DefaultSelection = DefaultSelection;
-    Qui.DefaultSingleSelection = DefaultSingleSelection;
+  Qui.Selection = Selection;
 })(Qui);
