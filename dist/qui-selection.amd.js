@@ -39,15 +39,15 @@ define(function() {
     },
     selectItems: function(items) {
       for (var i = 0; i < items.length; i++)
-        this.select(items);
+        this.select(item);
     },
     deselectItems: function(items) {
       for (var i = 0; i < items.length; i++)
-        this.deselect(items);
+        this.deselect(item);
     },
     toggleItems: function(items) {
       for (var i = 0; i < items.length; i++)
-        this.toggle(items);
+        this.toggle(item);
     },
     isAllItemsSelected: function(items) {
       for (var i = 0; i < items.length; i++)
@@ -90,14 +90,15 @@ define(function() {
     },
     set: function(newSelectedItems) {
       var itemsToDeselect = [],
+        itemsToSelect = [],
         i;
-      for (i = 0; i < this.__selectedItems.length; i++)
-        if (newSelectedItems.indexOf(this.__selectedItems[i]) === -1)
-          itemsToDeselect.push(this.__selectedItems[i]);
-      for (i = 0; i < itemsToDeselect.length; i++)
-        this.deselect(itemsToDeselect[i]);
-      for (i = 0; i < newSelectedItems.length; i++)
-        this.select(newSelectedItems[i]);
+      for (i = 0, item = this.__selectedItems[i]; i < this.__selectedItems.length; i++)
+        if (newSelectedItems.indexOf(item) === -1)
+          itemsToDeselect.push(item);
+        else
+          itemsToSelect.push(item);
+      this.deselectItems(itemsToDeselect);
+      this.selectedItems(itemsToSelect);
     }
   });
 
