@@ -1,5 +1,4 @@
-var Qui = Qui || {};
-(function(Qui) {
+define(function() {
   function Selection(selectionLimit, allItems) {
     this.__selectionLimit = selectionLimit || Number.POSITIVE_INFINITY;
     this.__allItems = allItems || [];
@@ -119,5 +118,5 @@ var Qui = Qui || {};
     }
   });
 
-  Qui.Selection = Selection;
-})(Qui);
+  return Selection;
+});
