@@ -92,14 +92,14 @@ var Qui = Qui || {};
     set: function(newSelectedItems) {
       var itemsToDeselect = [],
         itemsToSelect = [],
-        i;
+        i, item;
       for (i = 0, item = this.__selectedItems[i]; i < this.__selectedItems.length; i++)
         if (newSelectedItems.indexOf(item) === -1)
           itemsToDeselect.push(item);
         else
           itemsToSelect.push(item);
       this.deselectItems(itemsToDeselect);
-      this.selectedItems(itemsToSelect);
+      this.selectItems(itemsToSelect);
     }
   });
 
