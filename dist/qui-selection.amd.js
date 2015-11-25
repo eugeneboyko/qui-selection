@@ -32,10 +32,10 @@ define(function() {
       return this.__selectedItems.indexOf(item) !== -1;
     },
     toggle: function(item) {
-      if (this.__selectedItems.indexOf(item) === -1)
-        this.select(item);
-      else
+      if (this.isSelected(item))
         this.deselect(item);
+      else
+        this.select(item);
     },
     selectItems: function(items) {
       for (var i = 0; i < items.length; i++)
@@ -62,10 +62,10 @@ define(function() {
       return false;
     },
     selectAll: function() {
-      this.__selectedItems = this.__allItems.splice();
+      this.selectItems(this.allItems);
     },
     deselectAll: function() {
-      this.__selectedItems = [];
+      this.deselectItems(this.allItems);
     },
     toggleAll: function() {
       if (!this.isAllSelected())
@@ -75,6 +75,9 @@ define(function() {
     },
     isAllSelected: function() {
       return this.__selectedItems.length === this.__allItems.length;
+    },
+    isAnySelected: function() {
+      return this.__selectedItems.length > 0;
     },
     firstSelected: function() {
       return this.__selectedItems[0];
