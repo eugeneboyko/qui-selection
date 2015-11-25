@@ -40,11 +40,11 @@ var Qui = Qui || {};
     },
     selectItems: function(items) {
       for (var i = 0; i < items.length; i++)
-        this.select(item);
+        this.select(items[i]);
     },
     deselectItems: function(items) {
       for (var i = 0; i < items.length; i++)
-        this.deselect(item);
+        this.deselect(items[i]);
     },
     toggleItems: function(items) {
       for (var i = 0; i < items.length; i++)
