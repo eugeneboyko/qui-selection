@@ -1,6 +1,6 @@
 define(function() {
   function Selection(selectionLimit, allItems) {
-    this.__selectionLimit = selectionLimit || Number.POSITIVE_INFINITY;
+    this.__selectionLimit = isFinite(selectionLimit) ? selectionLimit : Number.POSITIVE_INFINITY;
     this.__allItems = allItems || [];
     this.__selectedItems = [];
   }
@@ -90,8 +90,8 @@ define(function() {
     },
     set: function(newSelectedItems) {
       var itemsToDeselect = [],
-        itemsToSelect = [],
-        i, item;
+          itemsToSelect = [],
+          i, item;
       for (i = 0, item = this.__selectedItems[i]; i < this.__selectedItems.length; i++)
         if (newSelectedItems.indexOf(item) === -1)
           itemsToDeselect.push(item);

@@ -1,5 +1,5 @@
 function Selection(selectionLimit, allItems) {
-  this.__selectionLimit = selectionLimit || Number.POSITIVE_INFINITY;
+  this.__selectionLimit = isFinite(selectionLimit) ? selectionLimit : Number.POSITIVE_INFINITY;
   this.__allItems = allItems || [];
   this.__selectedItems = [];
 }
